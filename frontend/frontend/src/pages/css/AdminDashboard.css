@@ -1,0 +1,29 @@
+.card {
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .btn-primary {
+    margin-right: 10px;
+  }
+  
+  .card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card .card-body {
+    padding: 20px;
+  }
+  
+  .container {
+    margin-top: 20px;
+  }
+  
+  h1, h2 {
+    margin-bottom: 20px;
+  }
+  
