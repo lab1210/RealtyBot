@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import login_img from "./img/bg_1.jpg";
+
 
 function SignupPage() {
   const [username, setUsername] = useState("");
@@ -11,6 +12,7 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +21,8 @@ function SignupPage() {
       .then((response) => {
         setMessage("User created successfully");
         setError("");
+        navigate('/login');
+
       })
       .catch((error) => {
         setError("Error creating user");
@@ -38,7 +42,7 @@ function SignupPage() {
             <div className="row g-0">
               <div className="col-md-6">
                 <img
-                  src={login_img}
+                  src={login_img} alt="login"
                   className="img-fluid"
                   style={{ height: "100%", objectFit: "cover" }}
                 />

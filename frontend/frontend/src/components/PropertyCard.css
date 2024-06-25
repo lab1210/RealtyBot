@@ -1,0 +1,29 @@
+.card-body {
+    position: relative;
+  }
+  
+  .heart-button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .heart-button:hover {
+    color: #ffcccc; /* Lighter red color on hover */
+  }
+  
+  .trash:hover{
+    color:rgb(230, 219, 219)
+  }
+  .card-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-title {
+    margin: 0;
+  }
+  

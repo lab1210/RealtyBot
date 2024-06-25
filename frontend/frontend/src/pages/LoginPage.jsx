@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import login_img from "./img/bg_1.jpg"
+import { toast } from 'react-toastify';
 
 function LoginPage({ setIsAuthenticated, setIsAdmin }) {
   const [username, setUsername] = useState('');
@@ -20,6 +21,7 @@ function LoginPage({ setIsAuthenticated, setIsAdmin }) {
         localStorage.setItem('isAdmin', response.data.is_admin);
         localStorage.setItem('userId', response.data.user_id); 
         setIsAuthenticated(true);
+        toast.success('Login successful')
         setIsAdmin(response.data.is_admin);
         navigate('/');
       })
@@ -36,7 +38,7 @@ function LoginPage({ setIsAuthenticated, setIsAdmin }) {
           <div className="card shadow-sm">
             <div className="row g-0">
               <div className="col-md-6">
-                <img src={login_img} className="img-fluid" style={{ height: '100%', objectFit: 'cover' }} />
+                <img src={login_img} alt="Login"className="img-fluid" style={{ height: '100%', objectFit: 'cover' }} />
               </div>
               <div className="col-md-6">
                 <div className="card-body">

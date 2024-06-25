@@ -1,145 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PropertyForm({ onSubmit, property }) {
-  const [formData, setFormData] = useState({
-    address: '',
-    price: '',
-    bedrooms: '',
-    bathrooms: '',
-    parking_spaces: '',
-    image_url: '',
-    description: ''
-  });
+  const [address, setAddress] = useState('');
+  const [price, setPrice] = useState('');
+  const [bedrooms, setBedrooms] = useState('');
+  const [bathrooms, setBathrooms] = useState('');
+  const [parkingSpaces, setParkingSpaces] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
     if (property) {
-      setFormData({
-        address: property.address,
-        price: property.price,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        parking_spaces: property.parking_spaces,
-        image_url: property.image_url,
-        description: property.description
-      });
-    } else {
-      setFormData({
-        address: '',
-        price: '',
-        bedrooms: '',
-        bathrooms: '',
-        parking_spaces: '',
-        image_url: '',
-        description: ''
-      });
+      setAddress(property.address);
+      setPrice(property.price);
+      setBedrooms(property.bedrooms);
+      setBathrooms(property.bathrooms);
+      setParkingSpaces(property.parking_spaces);
+      setImageUrl(property.image_url);
+      setDescription(property.description);
     }
   }, [property]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const propertyData = { address, price, bedrooms, bathrooms, parking_spaces: parkingSpaces, image_url: imageUrl, description };
+    onSubmit(propertyData);
   };
 
   return (
-    <div className="card mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{property ? 'Edit Property' : 'Add Property'}</h5>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="address" className="form-label">Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="price" className="form-label">Price</label>
-            <input
-              type="text"
-              className="form-control"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="bedrooms" className="form-label">Bedrooms</label>
-            <input
-              type="number"
-              className="form-control"
-              id="bedrooms"
-              name="bedrooms"
-              value={formData.bedrooms}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="bathrooms" className="form-label">Bathrooms</label>
-            <input
-              type="number"
-              className="form-control"
-              id="bathrooms"
-              name="bathrooms"
-              value={formData.bathrooms}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="parking_spaces" className="form-label">Parking Spaces</label>
-            <input
-              type="number"
-              className="form-control"
-              id="parking_spaces"
-              name="parking_spaces"
-              value={formData.parking_spaces}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="image_url" className="form-label">Image URL</label>
-            <input
-              type="text"
-              className="form-control"
-              id="image_url"
-              name="image_url"
-              value={formData.image_url}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="description" className="form-label">Description</label>
-            <textarea
-              className="form-control"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
-          <button type="submit" className="btn btn-primary">{property ? 'Update' : 'Add'} Property</button>
-        </form>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label htmlFor="address" className="form-label">Address</label>
+        <input type="text" className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
       </div>
-    </div>
+      <div className="mb-3">
+        <label htmlFor="price" className="form-label">Price</label>
+        <input type="text" className="form-control" id="price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="bedrooms" className="form-label">Bedrooms</label>
+        <input type="number" className="form-control" id="bedrooms" value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="bathrooms" className="form-label">Bathrooms</label>
+        <input type="number" className="form-control" id="bathrooms" value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="parkingSpaces" className="form-label">Parking Spaces</label>
+        <input type="number" className="form-control" id="parkingSpaces" value={parkingSpaces} onChange={(e) => setParkingSpaces(e.target.value)} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="imageUrl" className="form-label">Image URL</label>
+        <input type="text" className="form-control" id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="description" className="form-label">Description</label>
+        <textarea className="form-control" id="description" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+      </div>
+      <button type="submit" className="btn btn-primary">Submit</button>
+    </form>
   );
 }
 

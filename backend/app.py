@@ -35,8 +35,19 @@ def create_tables():
     )
     ''')
     
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS saved_properties (
+        user_id INTEGER,
+        property_id INTEGER,
+        PRIMARY KEY (property_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (property_id) REFERENCES properties(id)
+    )
+    ''')
+    
     conn.commit()
     conn.close()
+
 
 # Create tables if they don't exist
 create_tables()

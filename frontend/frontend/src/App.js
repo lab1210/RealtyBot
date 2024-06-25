@@ -5,6 +5,8 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import RecommendationPage from "./pages/RecommendationPage";
@@ -58,6 +60,7 @@ const AppContent = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         {isAdmin && <Route path="/admin" element={<AdminDashboardPage />} />}
       </Routes>
+      <ToastContainer/>
     </>
   );
 };

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropertyForm from './PropertyForm';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/AdminDashboard.css'
+import './css/AdminDashboard.css';
+
 function AdminDashboardPage() {
   const [properties, setProperties] = useState([]);
-  const [editingProperty, setEditingProperty] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     fetchProperties();
@@ -14,20 +14,37 @@ function AdminDashboardPage() {
   const fetchProperties = () => {
     axios.get('http://localhost:5000/api/properties')
       .then(response => {
-        setProperties(response.data.properties);
+        setProperties(response.data);
       })
       .catch(error => {
         console.error('Error fetching properties:', error);
       });
   };
 
-  const handleEdit = (property) => {
-    setEditingProperty(property);
+  const handleAddProperty = (propertyData) => {
+    axios.post('http://localhost:5000/api/admin/add', propertyData)
+      .then(() => {
+        fetchProperties();
+      })
+      .catch(error => {
+        console.error('Error adding property:', error);
+      });
   };
 
-  const handleDelete = (id) => {
+  const handleEditProperty = (id, propertyData) => {
+    axios.put(`http://localhost:5000/api/admin/edit/${id}`, propertyData)
+      .then(() => {
+        fetchProperties();
+        setSelectedProperty(null);
+      })
+      .catch(error => {
+        console.error('Error editing property:', error);
+      });
+  };
+
+  const handleDeleteProperty = (id) => {
     axios.delete(`http://localhost:5000/api/admin/delete/${id}`)
-      .then(response => {
+      .then(() => {
         fetchProperties();
       })
       .catch(error => {
@@ -35,31 +52,25 @@ function AdminDashboardPage() {
       });
   };
 
-  const handleFormSubmit = (property) => {
-    if (editingProperty) {
-      axios.put(`http://localhost:5000/api/admin/edit/${editingProperty.id}`, property)
-        .then(response => {
-          fetchProperties();
-          setEditingProperty(null);
-        })
-        .catch(error => {
-          console.error('Error updating property:', error);
-        });
-    } else {
-      axios.post('http://localhost:5000/api/admin/add', property)
-        .then(response => {
-          fetchProperties();
-        })
-        .catch(error => {
-          console.error('Error adding property:', error);
-        });
-    }
+  const handleEditClick = (property) => {
+    setSelectedProperty(property);
+  };
+
+  const handleCancelEdit = () => {
+    setSelectedProperty(null);
   };
 
   return (
     <div className="container py-5">
       <h1>Admin Dashboard</h1>
-      <PropertyForm onSubmit={handleFormSubmit} property={editingProperty} />
+      <div className="mb-3">
+        <PropertyForm
+          onSubmit={selectedProperty ? (data) => handleEditProperty(selectedProperty.id, data) : handleAddProperty}
+          property={selectedProperty}
+        />
+        {selectedProperty && <button className="btn btn-secondary mt-3" onClick={handleCancelEdit}>Cancel Edit</button>}
+      </div>
+      <h2>Properties</h2>
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
         {properties.map((property) => (
           <div key={property.id} className="col mb-4">
@@ -73,12 +84,12 @@ function AdminDashboardPage() {
               <div className="card-body">
                 <h5 className="card-title">{property.price}</h5>
                 <p className="card-text">{property.address}</p>
-                <button className="btn btn-primary me-2" onClick={() => handleEdit(property)}>
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn btn-danger" onClick={() => handleDelete(property.id)}>
-                  <i className="fas fa-trash"></i>
-                </button>
+                <p className="card-text">{property.description}</p>
+                <p className="card-text"><strong>Bedrooms:</strong> {property.bedrooms}</p>
+                <p className="card-text"><strong>Bathrooms:</strong> {property.bathrooms}</p>
+                <p className="card-text"><strong>Parking Spaces:</strong> {property.parking_spaces}</p>
+                <button className="btn btn-primary me-2" onClick={() => handleEditClick(property)}><i className="fas fa-edit"></i></button>
+                <button className="btn btn-danger" onClick={() => handleDeleteProperty(property.id)}><i className="fas fa-trash"></i></button>
               </div>
             </div>
           </div>

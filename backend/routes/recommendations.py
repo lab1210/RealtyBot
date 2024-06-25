@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Blueprint, request, jsonify
 import sqlite3
 from transformers import BertTokenizer, BertModel
@@ -26,6 +27,22 @@ def encode_block(sentence):
 
 pinecone_manager = PineconeManager()
 
+def get_db_connection():
+    conn = sqlite3.connect('real_estate.db', check_same_thread=False)
+    return conn
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 403
+        # Here you would check the validity of the token
+        if token != 'dummy_token':
+            return jsonify({'message': 'Invalid token'}), 403
+        return f(*args, **kwargs)
+    return decorated
+
 @bp.route('/api/recommendations', methods=['POST'])
 def get_recommendations():
     user_description = request.json['description']
@@ -39,7 +56,7 @@ def get_recommendations():
     property_ids = [int(match['id']) for match in query_results['matches']]
     placeholders = ', '.join('?' for _ in property_ids)
     
-    conn = sqlite3.connect('real_estate.db')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(f'SELECT * FROM properties WHERE id IN ({placeholders})', property_ids)
     recommendations = cursor.fetchall()

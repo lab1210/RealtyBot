@@ -19,21 +19,21 @@ function HomePage() {
           <div className="carousel-item active">
             <img src={slide1} className="d-block w-100" alt="Real Estate 1" />
             <div className="carousel-caption d-none d-md-block">
-              <h3>Beautiful Homes</h3>
+              <h2>Beautiful Homes</h2>
               <p>Find the home of your dreams with Realty Bot.</p>
             </div>
           </div>
           <div className="carousel-item">
             <img src={slide2} className="d-block w-100" alt="Real Estate 2" />
             <div className="carousel-caption d-none d-md-block">
-              <h5>Luxury Apartments</h5>
+              <h2>Luxury Apartments</h2>
               <p>Discover luxury living in prime locations.</p>
             </div>
           </div>
           <div className="carousel-item">
             <img src={slide3} className="d-block w-100" alt="Real Estate 3" />
             <div className="carousel-caption d-none d-md-block">
-              <h5>Commercial Properties</h5>
+              <h2>Commercial Properties</h2>
               <p>Invest in commercial properties with high ROI.</p>
             </div>
           </div>
